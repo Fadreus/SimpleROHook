@@ -525,6 +525,9 @@ public:
 
 class CGameActor : public CAbleToMakeEffect  {
 public:
+  static intptr_t jobOffset;
+  int* pJob() { return (int*)((char*)this + jobOffset); }
+
 #ifdef JRO_CLIENT_STRUCTURE
 	int m_cgameactor_unknown_j00;
 	int m_cgameactor_unknown_j01;
@@ -562,7 +565,12 @@ public:
 #ifndef JRO_CLIENT_STRUCTURE
 	unsigned long m_gid;
 #endif
-	int m_job;
+#ifdef CGAMEACTOR_PADDING
+	// As with CMode, I don't know where these extra bytes come from
+	// but putting them here fixes M2E
+	char m_pad1[CGAMEACTOR_PADDING];
+#endif
+	int m_job_deprecated;
 	int m_sex;
 	void* m_balloon;//class UIBalloonText* m_balloon;
 	void* m_chatTitle;//class UIChatRoomTitle* m_chatTitle;

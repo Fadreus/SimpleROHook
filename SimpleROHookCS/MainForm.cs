@@ -100,7 +100,9 @@ namespace SimpleROHookCS
                 = m_SharedData.deadcell;
             showChatScopetoolStripMenuItem.Checked
                 = m_SharedData.chatscope;
-            
+            showCastRangetoolStripMenuItem.Checked
+                = m_SharedData.castrange;
+
             CPUCooler_toolStripTrackBar.Value =
                 m_SharedData.cpucoolerlevel;
             Set_CPUCoolerText_toolStripMenuItem(m_SharedData.cpucoolerlevel);
@@ -113,6 +115,8 @@ namespace SimpleROHookCS
                 = m_SharedData.objectinformation;
             kHzAudioModeonBootToolStripMenuItem.Checked
                 = m_SharedData._44khz_audiomode;
+            chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.Checked
+                = m_SharedData.chainload;
 
             nPCLoggerToolStripMenuItem.Checked = m_npcLogger.Visible;
         }
@@ -150,6 +154,11 @@ namespace SimpleROHookCS
         {
             var tsm = (ToolStripMenuItem)sender;
             m_SharedData.chatscope = tsm.Checked;
+        }
+        private void showCastRangetoolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var tsm = (ToolStripMenuItem)sender;
+            m_SharedData.castrange = tsm.Checked;
         }
         private void showM2EToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -257,51 +266,337 @@ namespace SimpleROHookCS
             {
                 using( StreamWriter w = new StreamWriter(@"config.ini") )
                 {
-                    w.WriteLine("[M2E]");
-                    w.WriteLine("; MiniMiniEffect Color Setting");
-                    w.WriteLine("; 0xAARRGGBB");
-                    w.WriteLine("; AA:alpha  00-FF (00:0%---7F:50%---FF:100%)");
-                    w.WriteLine("; RR:red    00-FF (0-255)");
-                    w.WriteLine("; GG:green  00-FF (0-255)");
-                    w.WriteLine("; BB:blue   00-FF (0-255)");
-                    w.WriteLine("; ");
-                    w.WriteLine(";SW");
-                    w.WriteLine("Skill007E=0x7F008888");
-                    w.WriteLine(";FW");
-                    w.WriteLine("Skill007F=0x7F880000");
-                    w.WriteLine(";");
-                    w.WriteLine(";warp portal");
-                    w.WriteLine("Skill0080=0x7FFFFFFF");
-                    w.WriteLine("Skill0081=0x7FFFFFFF");
-                    w.WriteLine(";b.s. sacramentl");
-                    w.WriteLine("Skill0082=0x7F888888");
-                    w.WriteLine(";sanctuary");
-                    w.WriteLine("Skill0083=0x7F00FFFF");
-                    w.WriteLine(";ME");
-                    w.WriteLine("Skill0084=0x7F00FFFF");
-                    w.WriteLine(";pneuma");
-                    w.WriteLine("Skill0085=0x7F00FFFF");
-                    w.WriteLine(";SG LOV etc.");
-                    w.WriteLine("Skill0086=0x7F880088");
-                    w.WriteLine(";FP");
-                    w.WriteLine("Skill0087=0x7F888800");
-                    w.WriteLine("Skill0088=0x7F888800");
-                    w.WriteLine(";");
-                    w.WriteLine("Skill0089=0x7F888888");
-                    w.WriteLine("Skill008A=0x7F888888");
-                    w.WriteLine("Skill008B=0x7F888888");
-                    w.WriteLine("Skill008C=0x7F888888");
-                    w.WriteLine(";IW");
-                    w.WriteLine("Skill008D=0x7F880088");
-                    w.WriteLine(";QM");
-                    w.WriteLine("Skill008E=0x7F448844");
-                    w.WriteLine(";");
-                    w.WriteLine("Skill008F=0x7F888888");
-                    w.WriteLine(";");
-                    for (int ii = 0x90; ii < 0x100; ii++)
-                    {
-                        w.WriteLine("Skill{0}=0x7F888888", ii.ToString("X4"));
-                    }
+                    #region config.ini
+                    w.WriteLine(@"
+;//----------------------------------------------------------------------------
+;  Edit SimpleROHook settings from config.xml
+;
+;  Toxn's M2E Configuration
+;
+;  M2E
+;  Shows area of effects
+;  How to edit colors
+;  Edit values after x
+;  Example = 0xAARRGGBB
+;
+; AA:Alpha  00-FF (00:0%---7F:50%---FF:100%)
+; RR:Red    00-FF (0-255)
+; GG:Green  00-FF (0-255)
+; BB:Blue   00-FF (0-255)
+;----------------------------------------------------------------------------//
+
+[MiscColor]
+; Alpha is ignored for these - use the alpha level option in the GUI
+Deadcell=0x00FF00FF
+Chatscope=0x0000FF00
+Castrange=0x007F00FF
+Gutterline=0x00FF0000
+Demigutter=0x000000FF
+
+[M2E]
+; 
+; Safety_Wall
+Skill007E=0xBFFF00FF
+
+; Fire_Wall
+Skill007F=0x7F880000
+
+; Warp_Portal
+Skill0080=0x7FFFFFFF
+Skill0081=0x7FFFFFFF
+;
+Skill0082=0x7F888888
+
+; Sanctuary
+Skill0083=0x7F33FF66
+
+; Magnus_Exorcismus
+Skill0084=0x7ED1363
+
+; Pneuma
+Skill0085=0xFF00EEFF
+
+; Exploding_Dragon
+; Heaven's_Drive
+; Thunderstorm
+; Meteor_Storm
+; Storm_Gust
+; Lord_of_Vermilion
+; Dark_Grand_Cross
+; Grand_Cross
+Skill0086=0x7F006688
+
+; Fire_Pillar
+Skill0087=0x7F888800
+Skill0088=0x7F888800
+
+; Sheltering_Bliss
+Skill0089=0x7F888888
+;
+Skill008A=0x7F888888
+Skill008B=0x7F888888
+Skill008C=0x7F888888
+
+; Ice_Wall
+Skill008D=0x7F3771FA
+
+; Quagmire
+Skill008E=0x7F00CC33
+
+; Blast_Mine
+Skill008F=0x7F888888
+
+; Skid_Trap
+Skill0090=0x7F888888
+
+; Ankle_Snare
+Skill0091=0x7F000000
+
+; Venom_Dust
+Skill0092=0x7F660066
+
+; Land_Mine
+Skill0093=0x7F888888
+
+; Shockwave_Trap
+Skill0094=0x7F888888
+
+; Sandman
+Skill0095=0x7F888888
+
+; Flasher
+Skill0096=0x7F888888
+
+; Freezing_Trap
+Skill0097=0x7F888888
+
+; Claymore_Trap
+Skill0098=0x7F888888
+
+; Talkie_Box
+Skill0099=0x7F888888
+
+; Volcano
+Skill009A=0x7FCC0000
+
+; Deluge
+Skill009B=0x7F0033CC
+
+; Whirlwind
+Skill009C=0x7F00CC66
+
+; Magnetic_Earth
+Skill009D=0x7FFA00F6
+
+; Lullaby
+Skill009E=0x7F888888
+
+; Mental_Sensing
+Skill009F=0x7F888888
+
+; Down_Tempo
+Skill00A0=0x7F888888
+
+; Battle_Theme
+Skill00A1=0x7F888888
+
+; Harmonic_Lick
+Skill00A2=0x7F888888
+
+; Classical_Pluck
+Skill00A3=0x7F46065C
+
+; Power_Cord
+Skill00A4=0x5F888888
+
+; Acoustic_Rhythm
+Skill00A5=0x5F888888
+
+; Unchained_Serenade
+Skill00A6=0x7FEDE4E4
+
+; Perfect_Tablature
+Skill00A7=0x5F3417EE
+
+; Impressive_Riff
+Skill00A8=0x7FFF0073
+
+; Magic_Strings
+Skill00A9=0xBF0099FF
+
+; Song_of_Lutie
+Skill00AA=0x7FFFEE00
+
+; Hip_Shaker
+Skill00AB=0x7F47D543
+
+; Focus_Ballet
+Skill00AC=0x7F47D543
+
+; Slow_Grace
+Skill00AD=0x7F00FF00
+
+; Lady_Luck
+Skill00AE=0x7F47D543
+
+; Gypsy's_Kiss
+Skill00AF=0x7FA200FF
+
+; Scribble
+Skill00B0=0x7F888888
+
+; Bomb
+Skill00B1=0xBFFF0000
+
+; Come_to_me,_honey~
+; Mom,_Dad,_I_miss_you!
+; Romantic_Rendezvous
+Skill00B2=0x7F888888
+
+; Battle_Chant
+Skill00B3=0x7F1ADEE8
+
+; Basilica
+Skill00B4=0x7F888888
+
+; Lunar_Heat
+; Stellar_Heat
+; Solar_Heat
+Skill00B5=0x7F888888
+
+
+; Blinding_Mist
+Skill00B6=0xBF696464
+
+; Fiber_Lock
+Skill00B7=0xBFC9C5C5
+
+; Gravitational_Field
+Skill00B8=0x7F888888
+
+; Hermode's_Rod
+Skill00B9=0x7F888888
+
+; Desperado
+Skill00BA=0x7F888888
+
+; Watery_Evasion
+Skill00BB=0x7F888888
+
+; Flip_Tatami
+Skill00BC=0x7F888888
+
+; Blaze_Shield
+Skill00BD=0x7F888888
+
+; Gunslinger_Mine
+Skill00BE=0x7F888888
+
+;
+; 3rd Class
+;-----------
+: Warmer
+Skill00E4=0x7FFFFF66
+
+: Vaccum
+Skill00EB=0x7F000000
+
+; Manhole
+Skill00CC=0x7F000000
+
+; Blood Lust
+Skill00D0=0x7F663300
+
+; Chaos Panic
+Skill00CE=0x7F660066
+
+;neutral barrier
+Skill00E2=0x7F606060
+
+;stealth field
+Skill00E3=0x7606060
+
+;volcanic ash
+Skill00F7=0x7FF6600
+
+;song of despair
+Skill00DE=0x7F000000
+;
+;
+;
+;
+Skill00BF=0x7F00FF15
+;
+Skill00C0=0x7F871773
+Skill00C1=0x7F871773
+Skill00C2=0x7F871773
+Skill00C3=0x7F871773
+Skill00C4=0x7F871773
+Skill00C5=0x7F871773
+Skill00C6=0x7F871773
+Skill00C7=0x7FF0796C
+Skill00C8=0x7FF0796C
+Skill00C9=0x7FF0796C
+Skill00CA=0x7F871773
+Skill00CB=0x7F871773
+Skill00CC=0x7F49F3FC
+Skill00CD=0x7F00FFE5
+Skill00CE=0x7FEEFF30
+Skill00CF=0x7F00FFE5
+;
+Skill00D0=0x7FFF0000
+Skill00D1=0x7FFF00FB
+Skill00D2=0x7F00FF15
+Skill00D3=0x7F00FF15
+Skill00D4=0x7F00FF15
+Skill00D5=0x7F00FF15
+Skill00D6=0x7F00FF15
+Skill00D7=0x7F00FF15
+Skill00D8=0x7F00FF15
+Skill00D9=0x7F00FF15
+Skill00DA=0x7F00FF15
+Skill00DB=0x7F00FF15
+Skill00DC=0x7F00FF15
+Skill00DD=0x7F00FF15
+Skill00DE=0x7FE3D88F
+Skill00DF=0x7F00FF15
+;
+Skill00E0=0x7F00FFD0
+Skill00E1=0x7F00FFD0
+Skill00E2=0x7F00EEFF
+Skill00E3=0x7FB700FF
+Skill00E4=0x7F00FFD0
+Skill00E5=0x7F00FFD0
+Skill00E6=0x7F00FF08
+Skill00E7=0x7F00FFD0
+Skill00E8=0x7F00FFD0
+Skill00E9=0x7F00FFD0
+Skill00EA=0x7F00FFD0
+Skill00EB=0x7FE3D88F
+Skill00EC=0x7F00FFD0
+Skill00ED=0x7F00FFD0
+Skill00EE=0x7F00FFD0
+Skill00EF=0x7F00FFD0
+;
+Skill00F0=0x7F888888
+Skill00F1=0x7F888888
+Skill00F2=0x7F888888
+Skill00F3=0x7F888888
+Skill00F4=0x7F888888
+Skill00F5=0x7F888888
+Skill00F6=0x7F888888
+Skill00F7=0x7F752929
+Skill00F8=0x7F888888
+Skill00F9=0x7F888888
+Skill00FA=0x7F888888
+Skill00FB=0x7F888888
+Skill00FC=0x7F888888
+Skill00FD=0x7F888888
+Skill00FE=0x7F888888
+Skill00FF=0x7F888888
+
+");
+                    #endregion
                 }
             }
 
@@ -331,6 +626,8 @@ namespace SimpleROHookCS
                         = configration.deadcell;
                     m_SharedData.chatscope
                         = configration.chatscope;
+                    m_SharedData.castrange
+                        = configration.castrange;
                     m_SharedData.fix_windowmode_vsyncwait
                         = configration.fix_windowmode_vsyncwait;
                     m_SharedData.show_framerate
@@ -341,6 +638,8 @@ namespace SimpleROHookCS
                         = configration._44khz_audiomode;
                     m_SharedData.cpucoolerlevel
                         = configration.cpucoolerlevel;
+                    m_SharedData.chainload
+                        = configration.chainload;
                 }
                 #endregion
             }
@@ -391,6 +690,8 @@ namespace SimpleROHookCS
                     = m_SharedData.deadcell;
                 configration.chatscope
                     = m_SharedData.chatscope;
+                configration.castrange
+                    = m_SharedData.castrange;
                 configration.fix_windowmode_vsyncwait
                     = m_SharedData.fix_windowmode_vsyncwait;
                 configration.show_framerate
@@ -401,6 +702,8 @@ namespace SimpleROHookCS
                     = m_SharedData._44khz_audiomode;
                 configration.cpucoolerlevel
                     = m_SharedData.cpucoolerlevel;
+                configration.chainload
+                    = m_SharedData.chainload;
 
                 writer.Formatting = Formatting.Indented;
                 serializer.Serialize(writer, configration);
@@ -428,6 +731,11 @@ namespace SimpleROHookCS
             }
         }
 
+        private void chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var tsm = (ToolStripMenuItem)sender;
+            m_SharedData.chainload = tsm.Checked;
+        }
     }
 
     public class Config
@@ -442,11 +750,13 @@ namespace SimpleROHookCS
             bbe = true;
             deadcell = true;
             chatscope = true;
+            castrange = true;
             fix_windowmode_vsyncwait = true;
             show_framerate = true;
             objectinformation = false;
             _44khz_audiomode = false;
             cpucoolerlevel = 0;
+            chainload = true;
         }
 
         public bool write_packetlog { get; set; }
@@ -457,11 +767,13 @@ namespace SimpleROHookCS
         public bool bbe { get; set; }
         public bool deadcell { get; set; }
         public bool chatscope { get; set; }
+        public bool castrange { get; set; }
         public bool fix_windowmode_vsyncwait { get; set; }
         public bool show_framerate { get; set; }
         public bool objectinformation { get; set; }
         public bool _44khz_audiomode { get; set; }
         public int cpucoolerlevel { get; set; }
+        public bool chainload { get; set; }
 
         // without serialize
         [System.Xml.Serialization.XmlIgnoreAttribute]

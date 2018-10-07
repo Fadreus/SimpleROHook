@@ -30,11 +30,13 @@ namespace SimpleROHookCS
             public int bbe;
             public int deadcell;
             public int chatscope;
+            public int castrange;
             public int fix_windowmode_vsyncwait;
             public int show_framerate;
             public int objectinformation;
             public int _44khz_audiomode;
             public int cpucoolerlevel;
+            public int chainload;
             public fixed char configfilepath[MAX_PATH];
             public fixed char musicfilename[MAX_PATH];
         }
@@ -64,11 +66,13 @@ namespace SimpleROHookCS
             bbe = false;
             deadcell = false;
             chatscope = false;
+            castrange = false;
             fix_windowmode_vsyncwait = false;
             show_framerate = false;
             objectinformation = false;
             _44khz_audiomode = false;
             cpucoolerlevel = 0;
+            chainload = true;
             configfilepath = "";
             musicfilename = "";
             executeorder = false;
@@ -173,6 +177,18 @@ namespace SimpleROHookCS
             }
         }
 
+        public bool castrange
+        {
+            get
+            {
+                return (m_pSharedMemory->castrange == 0) ? false : true;
+            }
+            set
+            {
+                m_pSharedMemory->castrange = (value == false) ? 0 : 1;
+            }
+        }
+
         public bool fix_windowmode_vsyncwait
         {
             get
@@ -226,6 +242,17 @@ namespace SimpleROHookCS
             set
             {
                 m_pSharedMemory->cpucoolerlevel = value;
+            }
+        }
+        public bool chainload
+        {
+            get
+            {
+                return (m_pSharedMemory->chainload == 0) ? false : true;
+            }
+            set
+            {
+                m_pSharedMemory->chainload = (value == false) ? 0 : 1;
             }
         }
 

@@ -36,9 +36,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Core\ro\mouse.h">
       <Filter>ヘッダー ファイル\Core\ro</Filter>
     </ClInclude>
@@ -148,5 +145,8 @@
     <ResourceCompile Include="Injection.rc">
       <Filter>リソース ファイル</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

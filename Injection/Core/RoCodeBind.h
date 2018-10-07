@@ -92,6 +92,12 @@ private:
 #define MAX_FLLORSKILLTYPE 0x100
 	DWORD m_M2ESkillColor[MAX_FLLORSKILLTYPE];
 
+  DWORD m_deadcellColor;
+  DWORD m_chatscopeColor;
+  DWORD m_castrangeColor;
+  DWORD m_bbeGutterlineColor;
+  DWORD m_bbeDemigutterColor;
+
 	int m_CMode_subMode;
 	int m_CMode_old_subMode;
 

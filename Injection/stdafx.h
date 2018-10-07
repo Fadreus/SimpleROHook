@@ -46,3 +46,5 @@
 #include <fstream>
 
 #include <cwchar>
+
+#include "MinHook.h"

@@ -331,7 +331,7 @@ void vector3d::MatrixMult(struct vector3d& v, struct matrix& m)
 // CRenderer::ProjectVertex
 void CRoCodeBind::ProjectVertex(vector3d& src,matrix& vtm,float *x,float *y,float *oow)
 {
-	if( !g_renderer && !*g_renderer )return;
+	if( !g_renderer || !*g_renderer )return;
 
 	vector3d viewvect;
 	viewvect.MatrixMult( src , vtm );
@@ -346,7 +346,7 @@ void CRoCodeBind::ProjectVertex(vector3d& src,matrix& vtm,float *x,float *y,floa
 // CRenderer::ProjectVertex
 void CRoCodeBind::ProjectVertex(vector3d& src,matrix& vtm,tlvertex3d *vert)
 {
-	if( !g_renderer && !*g_renderer )return;
+	if( !g_renderer || !*g_renderer )return;
 
 	vector3d viewvect;
 	viewvect.MatrixMult( src , vtm );
@@ -363,7 +363,7 @@ void CRoCodeBind::ProjectVertex(vector3d& src,matrix& vtm,tlvertex3d *vert)
 // to move pointvector on camera view
 void CRoCodeBind::ProjectVertexEx(vector3d& src, vector3d& pointvector, matrix& vtm, float *x, float *y, float *oow)
 {
-	if (!g_renderer && !*g_renderer)return;
+	if (!g_renderer || !*g_renderer)return;
 
 	vector3d viewvect;
 	viewvect.MatrixMult(src, vtm);
@@ -378,7 +378,7 @@ void CRoCodeBind::ProjectVertexEx(vector3d& src, vector3d& pointvector, matrix& 
 
 void CRoCodeBind::ProjectVertexEx(vector3d& src,vector3d& pointvector, matrix& vtm, tlvertex3d *vert)
 {
-	if (!g_renderer && !*g_renderer)return;
+	if (!g_renderer || !*g_renderer)return;
 
 	vector3d viewvect;
 	viewvect.MatrixMult(src, vtm);
@@ -432,6 +432,32 @@ void CRoCodeBind::LoadIni(void)
 				m_M2ESkillColor[index] = color;
 				pkey++;
 			}
+
+      m_deadcellColor = 0x00ff00ff;
+      m_chatscopeColor = 0x0000ff00;
+      m_castrangeColor = 0x007f00ff;
+      m_bbeGutterlineColor = 0x00ff0000;
+      m_bbeDemigutterColor = 0x000000ff;
+
+      sectionsize = GetPrivateProfileSection(_T("MiscColor"), Sectionbuf, 32768, filename);
+      pkey = Sectionbuf;
+      while (*pkey != '\0') {
+        DWORD color;
+
+        char *ptemp;
+        ptemp = pkey;
+
+        std::string linestring(ptemp);
+
+        pkey += linestring.length();
+
+        if (sscanf_s(linestring.c_str(), "Deadcell=%x", &color)) m_deadcellColor = color & 0x00ffffff;
+        if (sscanf_s(linestring.c_str(), "Chatscope=%x", &color)) m_chatscopeColor = color & 0x00ffffff;
+        if (sscanf_s(linestring.c_str(), "Castrange=%x", &color)) m_castrangeColor = color & 0x00ffffff;
+        if (sscanf_s(linestring.c_str(), "Gutterline=%x", &color)) m_bbeGutterlineColor = color & 0x00ffffff;
+        if (sscanf_s(linestring.c_str(), "Demigutter=%x", &color)) m_bbeDemigutterColor = color & 0x00ffffff;
+        pkey++;
+      }
 		}
 	}
 }
@@ -689,7 +715,7 @@ void CRoCodeBind::DrawSRHDebug(IDirect3DDevice7* d3ddevice)
 
 				str << "m_clevel = " << pPlayer->m_clevel << "\n";
 				str << "m_gid = " << std::hex << (unsigned long)pPlayer->m_gid << "\n";
-				str << "m_job = " << std::hex << (unsigned long)pPlayer->m_job << "\n";
+				str << "m_job = " << std::hex << (unsigned long)*(pPlayer->pJob()) << "\n";
 				str << "m_sex = " << std::hex << (unsigned long)pPlayer->m_sex << "\n\n";
 #if 0
 				str << "m_cgameactor_unknown_state01 = " << std::hex << (unsigned long)pPlayer->m_cgameactor_unknown_state01 << "\n";
@@ -816,6 +842,8 @@ void CRoCodeBind::DrawSRHDebug(IDirect3DDevice7* d3ddevice)
 				{
 					CSkill *pSkill = *it;
 					if (pSkill){
+						putinfostr << "SKILL INFO" << std::endl;
+						putinfostr << "m_job = " << std::hex << *(pSkill->pJob()) << std::endl;
 						putinfostr << "m_ownerGid = " << std::hex << pSkill->m_ownerGid << std::endl;
 						putinfostr << "m_launchCnt = " << pSkill->m_launchCnt << std::endl;
 						putinfostr << "m_aid = " << pSkill->m_aid << std::endl;
@@ -882,7 +910,7 @@ void CRoCodeBind::DrawSRHDebug(IDirect3DDevice7* d3ddevice)
 					putinfostr << "(" << cx << "," << cy << ")" << std::endl;
 				//	putinfostr << "dest(" << pGameActor->m_moveDestX << "," << pGameActor->m_moveDestY << ")" << std::endl;
 					putinfostr << "lv = " << pGameActor->m_clevel << std::endl;
-					putinfostr << "job = " << pGameActor->m_job << std::endl;
+					putinfostr << "job = " << *(pGameActor->pJob()) << std::endl;
 					putinfostr << "m_npcId = " << pGameActor->m_npcId << std::endl;
 
 					putinfostr << "m_whiffCounter = " << pGameActor->m_whiffCounter << std::endl;
@@ -1014,8 +1042,8 @@ void CRoCodeBind::DrawM2E(IDirect3DDevice7* d3ddevice)
 		{
 			CSkill *pSkill = *it;
 
-			if( pSkill && pSkill->m_job < 0x100 && m_M2ESkillColor[pSkill->m_job] ){
-				DWORD color = m_M2ESkillColor[pSkill->m_job];
+			if( pSkill && *(pSkill->pJob()) < 0x100 && m_M2ESkillColor[*(pSkill->pJob())] ){
+				DWORD color = m_M2ESkillColor[*(pSkill->pJob())];
 				CPOLVERTEX vertex[4] =
 				{
 					{   0.0,  0.0,   0.0f,  1.0f, color },
@@ -1051,6 +1079,32 @@ void CRoCodeBind::DrawM2E(IDirect3DDevice7* d3ddevice)
 	}
 }
 
+int distance_circle(int dx, int dy)
+{
+	double temp_dist = std::sqrt((double)(dx*dx + dy*dy));
+	
+		//Bonus factor used by client
+		//This affects even horizontal/vertical lines so they are one cell longer than expected
+		temp_dist -= 0.0625;
+	
+		if (temp_dist < 0) temp_dist = 0;
+	
+		return ((int)temp_dist);
+}
+bool check_distance_circle(int dx, int dy, int distance)
+{
+	if (distance < 0) distance = 0;
+	
+	return (distance_circle(dx, dy) == distance);
+}
+
+bool check_distance(int dx, int dy, int distance)
+{
+	if (dx < 0) dx = -dx;
+	if (dy < 0) dy = -dy;
+	return ((dx<dy ? dy : dx) == distance);
+}
+
 void CRoCodeBind::DrawBBE(IDirect3DDevice7* d3ddevice)
 {
 	CGameMode *pGamemode = (CGameMode*)g_pmodeMgr->m_curMode;
@@ -1062,6 +1116,7 @@ void CRoCodeBind::DrawBBE(IDirect3DDevice7* d3ddevice)
 	BOOL bbe = g_pSharedData->bbe;
 	BOOL deadcell = g_pSharedData->deadcell;
 	BOOL chatscope = g_pSharedData->chatscope;
+	BOOL castrange = g_pSharedData->castrange;
 
 	d3ddevice->SetTexture(0, NULL);
 	d3ddevice->SetRenderState(D3DRENDERSTATE_ZENABLE, D3DZB_TRUE);
@@ -1101,22 +1156,28 @@ void CRoCodeBind::DrawBBE(IDirect3DDevice7* d3ddevice)
 					if (!pCell->flag && bbe)
 					{
 						if ((xx % 40 == 0) || (yy % 40 == 0)) {
-							color = 0x00FF0000;
+							color = m_bbeGutterlineColor;
 						}
 						else if ((xx % 40 < 5) || (yy % 40 < 5)) {
-							color = 0x000000FF;
+							color = m_bbeDemigutterColor;
 						}
 					}
 					if (pCell->flag){
 						if (deadcell){
-							color = 0x00ff00ff;
+							color = m_deadcellColor;
 						}
 					}
 
 					if (chatscope){
 						if ((xx - cx) >= -9 && (xx - cx) <= +9 && ((yy - cy) == -9 || (yy - cy) == +9)
 							|| (yy - cy) >= -9 && (yy - cy) <= +9 && ((xx - cx) == -9 || (xx - cx) == +9)){
-							color = 0x0000ff00;
+							color = m_chatscopeColor;
+						}
+					}
+
+					if (castrange) {
+						if (check_distance_circle(xx - cx, yy - cy, 9)) {
+							color = m_castrangeColor;
 						}
 					}
 
@@ -1401,9 +1462,16 @@ void CRoCodeBind::PacketQueueProc(char *buf,int len)
 	}
 }
 
-
+intptr_t CGameActor::jobOffset = offsetof(CGameActor, CGameActor::m_job_deprecated);
 void CRoCodeBind::SearchRagexeMemory(void)
 {
+  CSearchCode CGameActor_Job_use(
+    "89***1******"    // mov [edi+234h], eax ; m_job
+    "8b**"            // mov esi, [edi]
+    "8b**"            // mov ecx, edi
+    "e8********"      // call sub_698C70
+  );
+
 	// CZ_UIYourItemWnd::SendMsg CZ_REQ_WEAR_EQUIP handler
 	// Marker '1' CModeMgr g_modeMgr (C++ Class Instance)
 	// Marker '2' CModeMgr::GetGameMode
@@ -1557,6 +1625,31 @@ void CRoCodeBind::SearchRagexeMemory(void)
 		"e8*7******"        //   call    near F00579fc0
 		);
 
+	// 2017-09-20ragexe Ragexe.exe iRO RE:Start
+	CSearchCode UIYourItemWnd__SendMsg_REQ_WEAR_EQUIP_Handler_TypeG(
+		"b9*1******"               // mov ecx,ragexe.BB7468 ; CModeMgr g_modeMgr
+		"e8*2******"               // call ragexe.59A910 ; CModeMgr::GetGameMode
+		"b898090000"               // mov eax,998
+		"668945**"                 // mov word ptr ss:[ebp-30],ax
+		"668b86********"           // mov ax,word ptr ds:[esi+88]
+		"668945**"                 // mov word ptr ss:[ebp-2E],ax
+		"8b86********"             // mov eax,dword ptr ds:[esi+8C]
+		"8945**"                   // mov dword ptr ss:[ebp-2C],eax
+		"8d45**"                   // lea eax,dword ptr ss:[ebp-30]
+		"50"                       // push eax
+		"6898090000"               // push 998
+		"e8*3******"               // call ragexe.7CCAB0 ; CRagConnection::instanceR
+		"8bc8"                     // mov ecx,eax
+		"e8*4******"               // call ragexe.7CC080 ; CRagConnection::GetPacketSize
+		"50"                       // push eax
+		"e8********"               // call ragexe.7CCAB0 ; CRagConnection::instanceR
+		"8bc8"                     // mov ecx,eax
+		"e8*5******"               // call ragexe.7CC810 ; CRagConnection::SendPacket
+		"688a000000"               // push 8A
+		"b9*6******"               // mov ecx,ragexe.BE3578 ; UIWindowMgr g_windowMgr
+		"e8*7******"               // call ragexe.5654E0 ; UIWindowMgr::DeleteWindow
+		);
+
 	CSearchCode Mov_ecx_adr_Call_near_adr(
 		"b9*1******"        //   mov     ecx, dword L009b74f8
 		"e8*2******"        //   call    near F005ac940
@@ -1585,10 +1678,25 @@ void CRoCodeBind::SearchRagexeMemory(void)
 		"6800070000"		// push    dword 000000700h
 		"50"				// push    eax
 		);
+	CSearchCode CMouse_Init_vc11(
+		"56"                           // push esi
+		"6a00"                         // push 0 ; punkOuter
+		"8bf1"                         // mov esi,ecx
+		"56"                           // push esi ; ppDI
+		"6800070000"                   // push 700 ; dwVersion
+		"ff35********"                 // push dword ptr ds:[D44B50] ; hinst
+		);
 	CSearchCode winmain_init_CMouse_Init_call(
 		"b9*1******"		// mov     ecx,g_mouse
 		"e8*2******"		// call    near CMouse__Init
 		"a1*3******"		// mov     eax, g_renderer__CRenderer
+		);
+	// 2017-09-27ragexe iRO RE:Start - does not use DirectInput
+	CSearchCode winmain_init_no_CMouse_Init_call(
+		"a1*1******"		// mov eax,dword ptr ds:[BE29E8] ; g_renderer__CRenderer
+		"b9********"		// mov ecx,ragexe.BE3658 ; g_windowMgr
+		"ff7028"			// push dword ptr ds:[eax+28]
+		"ff7024"			// push dword ptr ds:[eax+24]
 		);
 
 	CSearchCode funcPlayStrem_based_HighPrest_exe(
@@ -1774,6 +1882,20 @@ void CRoCodeBind::SearchRagexeMemory(void)
 			}
 		}
 
+    for (UINT ii = 0; ii < mbi.RegionSize - CGameActor_Job_use.GetSize(); ii++)
+    {
+      LPBYTE pBase = (LPBYTE)mbi.BaseAddress;
+
+      if (CGameActor_Job_use.PatternMatcher(&pBase[ii]))
+      {
+        CGameActor::jobOffset = CGameActor_Job_use.GetImmediateDWORD(&pBase[ii], '1');
+        DEBUG_LOGGING_NORMAL(("Find CGameActor::m_job offset = %08X (found at %08X)",
+          CGameActor::jobOffset, &pBase[ii]));
+
+        break;
+      }
+    }
+
 		// snatch the packetLenMap
 		for( UINT ii = 0; ii < mbi.RegionSize - 1000 ; ii++ )
 		{
@@ -1863,7 +1985,23 @@ void CRoCodeBind::SearchRagexeMemory(void)
 				DEBUG_LOGGING_NORMAL(("TypeF CRagConnection::GetPacketSize = %08X", m_functionRagexe_CRagConnection__GetPacketSize));
 				break;
 			}
+			else
+			if (UIYourItemWnd__SendMsg_REQ_WEAR_EQUIP_Handler_TypeG.PatternMatcher(&pBase[ii]))
+			{
+				m_functionRagexe_CRagConnection__instanceR =
+					(tCRagConnection__instanceR)UIYourItemWnd__SendMsg_REQ_WEAR_EQUIP_Handler_TypeG
+					.Get4BIndexDWORD(&pBase[ii], '3');
+				m_functionRagexe_CRagConnection__GetPacketSize =
+					(tCRagConnection__GetPacketSize)UIYourItemWnd__SendMsg_REQ_WEAR_EQUIP_Handler_TypeG
+					.Get4BIndexDWORD(&pBase[ii], '4');
+				g_pmodeMgr = (CModeMgr*)UIYourItemWnd__SendMsg_REQ_WEAR_EQUIP_Handler_TypeG
+					.GetImmediateDWORD(&pBase[ii], '1');
+				DEBUG_LOGGING_NORMAL(("TypeG CRagConnection::instanceR = %08X", m_functionRagexe_CRagConnection__instanceR));
+				DEBUG_LOGGING_NORMAL(("TypeG CRagConnection::GetPacketSize = %08X", m_functionRagexe_CRagConnection__GetPacketSize));
+				break;
+			}
 		} 
+#if 0
 		if (m_functionRagexe_CRagConnection__instanceR && m_functionRagexe_CRagConnection__GetPacketSize){
 			// get packet length for classic client.
 			m_functionRagexe_CRagConnection__instanceR();
@@ -1882,15 +2020,17 @@ void CRoCodeBind::SearchRagexeMemory(void)
 				}
 			}
 		}
-
+#endif
 
 
 		// get CMouse instance
+		// TODO: vc11 signature has different size - adjust search range
 		for( UINT ii = 0; ii < mbi.RegionSize - CMouse_Init_vc6.GetSize() ; ii++ )
 		{
 			LPBYTE pBase = (LPBYTE)mbi.BaseAddress;
-			if( CMouse_Init_vc6.PatternMatcher( &pBase[ii] )
-			 || CMouse_Init_vc9.PatternMatcher( &pBase[ii] )
+			if (CMouse_Init_vc6.PatternMatcher(&pBase[ii])
+				|| CMouse_Init_vc9.PatternMatcher(&pBase[ii])
+				|| CMouse_Init_vc11.PatternMatcher(&pBase[ii])
 				)
 			{
 				ptr_CMouse_Init = (DWORD)( &pBase[ii] );
@@ -1915,6 +2055,20 @@ void CRoCodeBind::SearchRagexeMemory(void)
 						DEBUG_LOGGING_NORMAL( ("find *g_renderer = %08X",g_renderer) );
 						break;
 					}
+				}
+			}
+		}
+		else
+		{
+			for (int ii = mbi.RegionSize - winmain_init_no_CMouse_Init_call.GetSize(); ii >= 0; ii--)
+			{
+				LPBYTE pBase = (LPBYTE)mbi.BaseAddress;
+				if (winmain_init_no_CMouse_Init_call.PatternMatcher(&pBase[ii]))
+				{
+					DEBUG_LOGGING_NORMAL(("find init without CMouse::Init call : %08X", pBase + ii));
+					g_renderer = (CRenderer**)winmain_init_no_CMouse_Init_call.GetImmediateDWORD(&pBase[ii], '1');
+					DEBUG_LOGGING_NORMAL(("find *g_renderer = %08X", g_renderer));
+					break;
 				}
 			}
 		}

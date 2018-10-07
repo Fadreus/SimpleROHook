@@ -49,6 +49,7 @@
             this.showBBEtoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showDeadCelltoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showChatScopetoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showCastRangetoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groundZBiasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ground_zbias_ToolStripTrackBar = new SimpleROHookCS.ToolStripTrackBar();
             this.alphaLeveltoolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -59,6 +60,7 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.aboutSimpleROHookToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TaskTray_contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,36 +88,37 @@
             this.aboutSimpleROHookToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.TaskTray_contextMenuStrip.Name = "contextMenuStrip1";
-            this.TaskTray_contextMenuStrip.Size = new System.Drawing.Size(268, 246);
+            this.TaskTray_contextMenuStrip.Size = new System.Drawing.Size(249, 268);
             this.TaskTray_contextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.TaskTray_contextMenuStrip_Opening);
             // 
             // playMusicOnClientStreamPlayerToolStripMenuItem
             // 
             this.playMusicOnClientStreamPlayerToolStripMenuItem.Name = "playMusicOnClientStreamPlayerToolStripMenuItem";
-            this.playMusicOnClientStreamPlayerToolStripMenuItem.Size = new System.Drawing.Size(267, 22);
+            this.playMusicOnClientStreamPlayerToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
             this.playMusicOnClientStreamPlayerToolStripMenuItem.Text = "PlayMusic on ClientStreamPlayer";
             this.playMusicOnClientStreamPlayerToolStripMenuItem.Click += new System.EventHandler(this.playMusicOnClientStreamPlayerToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(264, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(245, 6);
             // 
             // extraToolStripMenuItem
             // 
             this.extraToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.kHzAudioModeonBootToolStripMenuItem,
             this.freeMouseToolStripMenuItem,
-            this.fixWindowModeVsyncWaitToolStripMenuItem});
+            this.fixWindowModeVsyncWaitToolStripMenuItem,
+            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem});
             this.extraToolStripMenuItem.Name = "extraToolStripMenuItem";
-            this.extraToolStripMenuItem.Size = new System.Drawing.Size(267, 22);
+            this.extraToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
             this.extraToolStripMenuItem.Text = "Extra";
             // 
             // kHzAudioModeonBootToolStripMenuItem
             // 
             this.kHzAudioModeonBootToolStripMenuItem.CheckOnClick = true;
             this.kHzAudioModeonBootToolStripMenuItem.Name = "kHzAudioModeonBootToolStripMenuItem";
-            this.kHzAudioModeonBootToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.kHzAudioModeonBootToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.kHzAudioModeonBootToolStripMenuItem.Text = "44kHz Audio Mode(on boot)";
             this.kHzAudioModeonBootToolStripMenuItem.Click += new System.EventHandler(this.kHzAudioModeonBootToolStripMenuItem_Click);
             // 
@@ -123,7 +126,7 @@
             // 
             this.freeMouseToolStripMenuItem.CheckOnClick = true;
             this.freeMouseToolStripMenuItem.Name = "freeMouseToolStripMenuItem";
-            this.freeMouseToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.freeMouseToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.freeMouseToolStripMenuItem.Text = "FreeMouse(on boot)";
             this.freeMouseToolStripMenuItem.Click += new System.EventHandler(this.freeMouseToolStripMenuItem_Click);
             // 
@@ -131,7 +134,7 @@
             // 
             this.fixWindowModeVsyncWaitToolStripMenuItem.CheckOnClick = true;
             this.fixWindowModeVsyncWaitToolStripMenuItem.Name = "fixWindowModeVsyncWaitToolStripMenuItem";
-            this.fixWindowModeVsyncWaitToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.fixWindowModeVsyncWaitToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
             this.fixWindowModeVsyncWaitToolStripMenuItem.Text = "Fix WindowMode VsyncWait";
             this.fixWindowModeVsyncWaitToolStripMenuItem.Click += new System.EventHandler(this.fixWindowModeVsyncWaitToolStripMenuItem_Click);
             // 
@@ -140,14 +143,14 @@
             this.windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.nPCLoggerToolStripMenuItem});
             this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
-            this.windowToolStripMenuItem.Size = new System.Drawing.Size(267, 22);
+            this.windowToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
             this.windowToolStripMenuItem.Text = "Window";
             // 
             // nPCLoggerToolStripMenuItem
             // 
             this.nPCLoggerToolStripMenuItem.CheckOnClick = true;
             this.nPCLoggerToolStripMenuItem.Name = "nPCLoggerToolStripMenuItem";
-            this.nPCLoggerToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.nPCLoggerToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.nPCLoggerToolStripMenuItem.Text = "NPC Logger";
             this.nPCLoggerToolStripMenuItem.Click += new System.EventHandler(this.nPCLoggerToolStripMenuItem_Click);
             // 
@@ -158,14 +161,14 @@
             this.showObjectInformationToolStripMenuItem,
             this.packetLogToolStripMenuItem});
             this.debugInfomationToolStripMenuItem.Name = "debugInfomationToolStripMenuItem";
-            this.debugInfomationToolStripMenuItem.Size = new System.Drawing.Size(267, 22);
+            this.debugInfomationToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
             this.debugInfomationToolStripMenuItem.Text = "Debug Infomation";
             // 
             // showFpsToolStripMenuItem
             // 
             this.showFpsToolStripMenuItem.CheckOnClick = true;
             this.showFpsToolStripMenuItem.Name = "showFpsToolStripMenuItem";
-            this.showFpsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.showFpsToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.showFpsToolStripMenuItem.Text = "Show Fps";
             this.showFpsToolStripMenuItem.Click += new System.EventHandler(this.showFpsToolStripMenuItem_Click);
             // 
@@ -173,7 +176,7 @@
             // 
             this.showObjectInformationToolStripMenuItem.CheckOnClick = true;
             this.showObjectInformationToolStripMenuItem.Name = "showObjectInformationToolStripMenuItem";
-            this.showObjectInformationToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.showObjectInformationToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.showObjectInformationToolStripMenuItem.Text = "Show Object Information";
             this.showObjectInformationToolStripMenuItem.Click += new System.EventHandler(this.showObjectInformationToolStripMenuItem_Click);
             // 
@@ -181,7 +184,7 @@
             // 
             this.packetLogToolStripMenuItem.CheckOnClick = true;
             this.packetLogToolStripMenuItem.Name = "packetLogToolStripMenuItem";
-            this.packetLogToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.packetLogToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.packetLogToolStripMenuItem.Text = "Packet Log";
             this.packetLogToolStripMenuItem.Click += new System.EventHandler(this.packetLogToolStripMenuItem_Click);
             // 
@@ -192,12 +195,13 @@
             this.showBBEtoolStripMenuItem,
             this.showDeadCelltoolStripMenuItem,
             this.showChatScopetoolStripMenuItem,
+            this.showCastRangetoolStripMenuItem,
             this.groundZBiasToolStripMenuItem,
             this.ground_zbias_ToolStripTrackBar,
             this.alphaLeveltoolStripMenuItem,
             this.alphaLeveltoolStripTrackBar});
             this.dMapMarkerToolStripMenuItem.Name = "dMapMarkerToolStripMenuItem";
-            this.dMapMarkerToolStripMenuItem.Size = new System.Drawing.Size(267, 22);
+            this.dMapMarkerToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
             this.dMapMarkerToolStripMenuItem.Text = "3D Map Grid";
             // 
             // showM2EToolStripMenuItem
@@ -232,6 +236,14 @@
             this.showChatScopetoolStripMenuItem.Text = "Show Chat Scope";
             this.showChatScopetoolStripMenuItem.Click += new System.EventHandler(this.showChatScopetoolStripMenuItem_Click);
             // 
+            // showCastRangetoolStripMenuItem
+            // 
+            this.showCastRangetoolStripMenuItem.CheckOnClick = true;
+            this.showCastRangetoolStripMenuItem.Name = "showCastRangetoolStripMenuItem";
+            this.showCastRangetoolStripMenuItem.Size = new System.Drawing.Size(275, 22);
+            this.showCastRangetoolStripMenuItem.Text = "Show Cast Range";
+            this.showCastRangetoolStripMenuItem.Click += new System.EventHandler(this.showCastRangetoolStripMenuItem_Click);
+            // 
             // groundZBiasToolStripMenuItem
             // 
             this.groundZBiasToolStripMenuItem.Enabled = false;
@@ -265,13 +277,13 @@
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(264, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(245, 6);
             // 
             // CPUCoolerText_toolStripMenuItem
             // 
             this.CPUCoolerText_toolStripMenuItem.Enabled = false;
             this.CPUCoolerText_toolStripMenuItem.Name = "CPUCoolerText_toolStripMenuItem";
-            this.CPUCoolerText_toolStripMenuItem.Size = new System.Drawing.Size(267, 22);
+            this.CPUCoolerText_toolStripMenuItem.Size = new System.Drawing.Size(248, 22);
             this.CPUCoolerText_toolStripMenuItem.Text = "CPU Cooler";
             // 
             // CPUCooler_toolStripTrackBar
@@ -285,27 +297,35 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(264, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(245, 6);
             // 
             // aboutSimpleROHookToolStripMenuItem
             // 
             this.aboutSimpleROHookToolStripMenuItem.Name = "aboutSimpleROHookToolStripMenuItem";
-            this.aboutSimpleROHookToolStripMenuItem.Size = new System.Drawing.Size(267, 22);
+            this.aboutSimpleROHookToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
             this.aboutSimpleROHookToolStripMenuItem.Text = "About SimpleROHook";
             this.aboutSimpleROHookToolStripMenuItem.Click += new System.EventHandler(this.aboutSimpleROHookToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(267, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
+            // chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem
+            // 
+            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.CheckOnClick = true;
+            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.Name = "chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem";
+            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.Size = new System.Drawing.Size(330, 22);
+            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.Text = "Chainload dinput.dll/.asi for dinput-free Ragexes";
+            this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem.Click += new System.EventHandler(this.chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(284, 284);
             this.Name = "MainForm";
             this.Text = "SimpleROHook";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Window_FormClosing);
@@ -343,10 +363,12 @@
         private System.Windows.Forms.ToolStripMenuItem showBBEtoolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showDeadCelltoolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showChatScopetoolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showCastRangetoolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem groundZBiasToolStripMenuItem;
         private ToolStripTrackBar ground_zbias_ToolStripTrackBar;
         private System.Windows.Forms.ToolStripMenuItem alphaLeveltoolStripMenuItem;
         private ToolStripTrackBar alphaLeveltoolStripTrackBar;
+        private System.Windows.Forms.ToolStripMenuItem chainloadDinputdllasiForDinputfreeRagexesToolStripMenuItem;
     }
 }
 
